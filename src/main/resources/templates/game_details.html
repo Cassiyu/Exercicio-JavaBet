@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Detalhes do Jogo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-900 text-white">
+<div class="container mx-auto py-8">
+  <h1 class="text-3xl font-bold mb-6 text-center" th:text="${game.homeTeam} + ' vs ' + ${game.awayTeam}"></h1>
+
+  <div class="bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+    <p class="text-gray-400" th:text="'Placar Atual: ' + ${game.homeTeamScore} + ' - ' + ${game.awayTeamScore}"></p>
+  </div>
+
+  <div class="bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+    <h2 class="text-xl font-bold mb-4">Seu Palpite</h2>
+
+    <form th:action="@{/games/{id}/predict(id=${game.id})}" th:object="${prediction}" method="post" class="flex flex-col md:flex-row items-center justify-between">
+      <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
+        <div class="flex flex-col items-center">
+          <span class="block text-xl font-semibold" th:text="${game.homeTeam}"></span>
+          <input type="number" id="predictedHomeTeamScore" th:field="*{predictedHomeTeamScore}" min="0" class="mt-1 p-2 block w-20 text-xl bg-gray-700 text-white rounded-md text-center" required>
+        </div>
+
+        <div class="text-gray-400 font-bold text-xl">vs</div>
+
+        <div class="flex flex-col items-center">
+          <span class="block text-xl font-semibold" th:text="${game.awayTeam}"></span>
+          <input type="number" id="predictedAwayTeamScore" th:field="*{predictedAwayTeamScore}" min="0" class="mt-1 p-2 block w-20 text-xl bg-gray-700 text-white rounded-md text-center" required>
+        </div>
+      </div>
+
+      <div class="text-center mt-6 md:mt-0">
+        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded text-xl">Enviar Palpite</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="bg-gray-800 rounded-lg shadow-md p-6">
+    <h2 class="text-xl font-bold mb-4">Apostas de Outros Usuários</h2>
+
+    <div th:each="prediction : ${predictions}" class="mb-6 p-4 bg-gray-900 rounded-lg flex items-center space-x-4">
+
+      <div class="w-16 h-16 rounded-full overflow-hidden">
+        <img th:src="${prediction.user.avatar}" alt="Avatar do usuário" class="object-cover w-full h-full">
+      </div>
+
+      <div class="flex-1">
+        <p class="text-lg font-semibold text-white" th:text="${prediction.user.name}"></p>
+
+        <div class="mt-2 flex justify-between items-center bg-gray-700 rounded-lg p-4">
+          <div class="flex items-center space-x-2">
+            <span class="text-lg font-medium" th:text="${game.homeTeam}"></span>
+            <span class="text-2xl font-bold" th:text="${prediction.predictedHomeTeamScore}"></span>
+          </div>
+
+          <span class="text-gray-400 font-bold text-xl">vs</span>
+
+          <div class="flex items-center space-x-2">
+            <span class="text-lg font-medium" th:text="${game.awayTeam}"></span>
+            <span class="text-2xl font-bold" th:text="${prediction.predictedAwayTeamScore}"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-8">
+    <a href="/" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">Voltar à lista de jogos</a>
+  </div>
+</div>
+</body>
+</html>
