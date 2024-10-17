@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Jogos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-900 text-white">
+<div class="container mx-auto py-8">
+    <a href="/logout" class="bg-red-600 hover:bg-pink-400 text-white py-2 px-6 rounded text-xl">Sair</a>
+
+    <h1 class="text-3xl font-bold mb-6 text-center">JavaBet</h1>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div th:each="game : ${games}" class="bg-gray-800 rounded-lg shadow-md p-6">
+        <a th:href="${'/games/'+game.id}">
+            <h2 class="text-xl font-bold mb-2" th:text="${game.homeTeam} + ' vs ' + ${game.awayTeam}"></h2>
+            <div class="flex items-center mt-4 w-full">
+                <span class="text-4xl">0</span>
+                <span class="mx-2">x</span>
+                <span class="text-4xl">0</span>
+            </div>
+        </a>
+    </div>
+  </div>
+
+
+</div>
+</body>
+</html>
